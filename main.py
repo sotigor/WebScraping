@@ -3,7 +3,7 @@ from extra_functions import *
 from locators import *
 
 def start_scraping(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch(headless=True)
     context = browser.new_context()
     page = context.new_page()
     page.goto("https://epicentrk.ua/shop/")
