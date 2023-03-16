@@ -1,5 +1,5 @@
 import time
-
+from playwright.sync_api import expect
 
 def get_lists_of_smartphones_and_prices(page, model_locator, price_locator, models_tecno_list=[],
                                        models_techno_price_list=[]):

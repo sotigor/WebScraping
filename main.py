@@ -1,9 +1,9 @@
-from playwright.sync_api import Playwright, sync_playwright
+from playwright.sync_api import Playwright, sync_playwright, expect
 from extra_functions import *
 from locators import *
 
 def start_scraping(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=True)
+    browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
     page.goto("https://epicentrk.ua/shop/")
@@ -14,15 +14,16 @@ def start_scraping(playwright: Playwright) -> None:
     page.get_by_role("link", name="Смартфоны").click()
     page.locator("//div[@class='button-group27 show-for-large']/a[4]").click()
     page.locator("[alt='Tecno']").click()
+    wait_func(5)
     number_of_pages = get_quantity_of_pagination_pages(page, PAGINATION_ITEM_LOCATOR)
     get_lists_of_smartphones_and_prices(page, MODEL_LOCATOR, PRICE_LOCATOR)
-
     if number_of_pages > 1:
         for i in range(2, number_of_pages+1):
             wait_func()
             page.locator(PAGINATION_BUTTON).click()
             wait_func(6)
             list_of_models_and_prices = get_lists_of_smartphones_and_prices(page, MODEL_LOCATOR, PRICE_LOCATOR)
+        else: print(f"Все страницы в количестве {i}шт  с найденным товаром обработаны успешно)")
 
     print(f"Найдено {len(list_of_models_and_prices[0])} акционных моделей бренда Tecno в наличии")
 
